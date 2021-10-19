@@ -114,13 +114,15 @@ class ParticleSystem
         this.geometry = null;
         this.points = null;
 
+        this.scaleFactor = (window.innerHeight * window.devicePixelRatio * 0.05) / (window.innerHeight * window.devicePixelRatio);
+
         this.emitter = params.emitter;
         this.velocity = params.velocity;
         this.colorStart = params.colorStart;
         this.colorEnd = params.colorEnd;
         this.time = params.time;
         this.position = params.position;
-        this.spread = params.spread;
+        this.spread = params.spread * this.scaleFactor;
         this.size = params.size;
         this.sizeStep = params.sizeStep;
         this.initVelocity = params.initVelocity;
@@ -132,6 +134,8 @@ class ParticleSystem
         this.tValues = [];
 
         this.initialize(params);
+
+        //console.log(this.scaleFactor);
     }
 
     initialize(params)
@@ -148,7 +152,7 @@ class ParticleSystem
                 value: params.colorEnd
             },
             sizeFactor: {
-                value: window.innerHeight * window.devicePixelRatio / 1.2
+                value: window.innerHeight * window.devicePixelRatio * 0.05
             }
         }
 
@@ -171,6 +175,9 @@ class ParticleSystem
         this.geometry.setAttribute('tValue', new THREE.Float32BufferAttribute([], 1));
     
         this.points = new THREE.Points(this.geometry, this.material);
+        //this.points.matrix.identity();
+        //this.points.matrixWorld.identity();
+        //this.points.modelViewMatrix.identity();
 
         if (params.scene)
         {
@@ -188,7 +195,7 @@ class ParticleSystem
             time : this.time,
             timeStart : this.time,
             velocity : this.initVelocity(),
-            size: (Math.random() * this.size + this.size*0.5),
+            size: (Math.random() * this.size + (this.size * 0.5)),
             rotation: Math.random() * 2.0 * Math.PI
         }
 
@@ -309,7 +316,6 @@ export default () => {
     // const cube = new THREE.Mesh( geometry, material );
     // cube.position.set(0,0.5,0);
 
-
     const texture1 = `${baseUrl}smoke1.png`;
     var particleSpread = new ParticleSystem({
         scene: app, 
@@ -317,7 +323,7 @@ export default () => {
         position: new THREE.Vector3(0,0,0),
         emitter: 1.0,
         spread: 3.0,
-        initVelocity : () => {return new THREE.Vector3((Math.random() * 50) - 25,5,(Math.random() * 50) - 25)},
+        initVelocity : () => {return new THREE.Vector3((Math.random() * 50*0.05) - 25*0.05,5*0.05,(Math.random() * 50*0.05) - 25*0.05)},
         colorStart: new THREE.Color(1,0,0),
         colorEnd: new THREE.Color(1,0.9,0),
         size: 1.0,
@@ -334,10 +340,10 @@ export default () => {
     var particleFire1 = new ParticleSystem({
         scene: app, 
         texture: texture2,
-        position: new THREE.Vector3(0,20,0),
+        position: new THREE.Vector3(0,20*0.05,0),
         emitter: 0.1,
         spread: 3.0,
-        initVelocity : () => {return new THREE.Vector3(0,10,0);},
+        initVelocity : () => {return new THREE.Vector3(0,10*0.05,0);},
         colorStart: new THREE.Color(1,0,0),
         colorEnd: new THREE.Color(1,0.9,0),
         size: 30.0,
@@ -352,10 +358,10 @@ export default () => {
     var particleFire2 = new ParticleSystem({
         scene: app, 
         texture: texture3,
-        position: new THREE.Vector3(0,14,0),
+        position: new THREE.Vector3(0,14*0.05,0),
         emitter: 0.01,
         spread: 0.30,
-        initVelocity : () => {return new THREE.Vector3(0,20,0);},
+        initVelocity : () => {return new THREE.Vector3(0,20*0.05,0);},
         colorStart: new THREE.Color(1,1,1),
         colorEnd: new THREE.Color(1,0.9,0),
         size: 20.0,
@@ -380,17 +386,18 @@ export default () => {
 
     useFrame(({timestamp}) => {
 
-    const now = Date.now();
-    const timeDiff = (now - lastTimestamp) / 1000;
-    lastTimestamp = now;
+        const now = Date.now();
+        const timeDiff = (now - lastTimestamp) / 1000.0;
+        lastTimestamp = now;
 
-    if (localPlayer) {
 
-        //app.position.copy(localPlayer.position);
-        app.position.set(localPlayer.position.x,localPlayer.position.y - 2,localPlayer.position.z);
-        particleContainer.update(timeDiff);
+        if (localPlayer) {
 
-    }
+            //app.position.copy(localPlayer.position);
+            app.position.set(localPlayer.position.x,localPlayer.position.y-1.5,localPlayer.position.z);
+            particleContainer.update(timeDiff);
+
+        }
   });
 
   return app;

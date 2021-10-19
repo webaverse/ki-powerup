@@ -92,6 +92,27 @@ class ParticleContainer
         return res;
     }
 
+    setVisible(newVisible)
+    {
+        this.visible = newVisible;
+        for(var i=0;i<this.particleSystems.length;i++)
+        {
+            this.particleSystems[i].setVisible(this.visible);
+        }
+    }
+
+    changeVisible()
+    {
+        if (this.visible)
+        {
+            this.setVisible(false);
+        }
+        else
+        {
+            this.setVisible(true);
+        }
+    }    
+
     update(dt)
     {
         for(var i=0;i<this.particleSystems.length;i++)
@@ -200,6 +221,11 @@ class ParticleSystem
         }
 
         this.particles.push(newParticle);
+    }
+
+    setVisible(newVisible)
+    {
+        this.points.visible = newVisible;
     }
 
     count()

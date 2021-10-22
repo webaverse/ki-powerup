@@ -3,5 +3,6 @@
   "start_url": "index.js",
   "components": {
     "activate": true
-  }
+  },
+  "copyright": "LIGHTNING CAPSULE (https://sketchfab.com/3d-models/lightning-capsule-1477900e393d468ebfef7e7540ed69b6) by carlosbarrera_10 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/)."
 }

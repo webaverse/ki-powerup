@@ -324,8 +324,12 @@ export default () => {
 		  gltfLoader.load(u, accept, function onprogress() {}, reject);
 		});
 		o = o.scene;
-		o.scale.set(0.1,0.1,0.1);
+		//o.scale.set(0.1,0.1,0.1);
 		app.add(o);
+        //o.position.set(0,-0.25,0);
+        //const group = new Group();
+        //group.add( o );
+        //app.add( group );
 		
 
 		const physicsId = physics.addGeometry(o);
@@ -357,7 +361,7 @@ export default () => {
         lastTimestamp = now;
 
         if (localPlayer) {
-			demo.setPosition(new Vector3(localPlayer.position.x - itemPos.x * 2, localPlayer.position.y - 1.4, localPlayer.position.z - itemPos.z * 2));
+			demo.setPosition(new Vector3(localPlayer.position.x - itemPos.x * 2, localPlayer.position.y - (itemPos.y * 2) - 1.4, localPlayer.position.z - itemPos.z * 2));
 			demo.render(timeDiff);
         }
   });

@@ -1,5 +1,6 @@
 {
   "name": "ki-power",
+  "description": "ki-power",
   "start_url": "index.js",
   "components": {
     "activate": true
